@@ -5,103 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pay-It-Forward Taskboard</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-        header {
-            background-color: #6200ea;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
-        header p {
-            margin: 0;
-            font-size: 1.2rem;
-        }
-        main {
-            padding: 2rem;
-        }
-        .task-form {
-            margin-bottom: 2rem;
-        }
-        .task-form input, .task-form textarea, .task-form button {
-            display: block;
-            width: 100%;
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            font-size: 1rem;
-        }
-        .task-form button {
-            background-color: #03dac5;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .task-list {
-            list-style: none;
-            padding: 0;
-        }
-        .task-list li {
-            background: white;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .task-list li button {
-            background-color: #6200ea;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            display: block;
-        }
-        .comment-section textarea, .comment-section button {
-            display: block;
-            width: 100%;
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            font-size: 1rem;
-        }
-        .comments {
-            list-style: none;
-            padding: 0;
-        }
-        .comments li {
-            background: #fff;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .comments li ul {
-            margin-left: 1rem;
-        }
-        footer {
-            text-align: center;
-            margin-top: 2rem;
-            padding: 1rem;
-            background-color: #f4f4f9;
-            border-top: 1px solid #ddd;
-        }
+        /* Add your CSS styles here */
     </style>
 </head>
 <body>
     <header>
         <h1>Pay-It-Forward Taskboard</h1>
         <p>Help others and earn good karma!</p>
-        <p style="margin-top: 1rem; font-size: 1rem; color: #f0f0f0;">
-            Need a hand? Let someone assist you. Or, if you're able to lend your skills and support, join the **Pay-It-Forward Taskboard** to make a difference. Help someone in need, and together, we can build a more supportive community.
-        </p>
     </header>
     <main>
         <section class="task-form">
@@ -113,109 +23,68 @@
         </section>
         <section class="task-list-container">
             <h2>Tasks</h2>
-            <ul id="task-list" class="task-list"></ul>
+            <ul id="task-list"></ul>
         </section>
     </main>
     <footer>
         <p>Enjoying this app? Support the creator!</p>
-        <a href="https://paypal.me/JLNBuitendag/1" target="_blank" onclick="showThankYouMessage()" style="text-decoration: none;">
-            <button style="background-color: #03dac5; color: white; border: none; padding: 0.8rem 1.5rem; font-size: 1rem; cursor: pointer; border-radius: 4px;">
-                Donate $1
-            </button>
-        </a>
-        <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
-            If this program has been helpful to you or if you feel it adds value to your work, consider supporting the creator! Your donations will help me continue creating free, valuable content and tools to assist others. Every contribution, no matter how small, makes a difference. Thank you for your generosity!
-        </p>
     </footer>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
     <script>
-        function addTask() {
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmc0UDtOFaLrGWbVj2ROugpyyxAZAuBHg",
+            authDomain: "pay-it-forward-a1ab8.firebaseapp.com",
+            projectId: "pay-it-forward-a1ab8",
+            storageBucket: "pay-it-forward-a1ab8.firebasestorage.app",
+            messagingSenderId: "788159566096",
+            appId: "1:788159566096:web:aa40dcf3d843c98abc1595"
+	    measurementId: "G-5NPK7TMQZH"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+
+        // Add a task to Firestore
+        async function addTask() {
             const posterName = document.getElementById('task-poster').value;
             const title = document.getElementById('task-title').value;
             const desc = document.getElementById('task-desc').value;
 
             if (posterName && title && desc) {
-                const taskList = document.getElementById('task-list');
-
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${title}</strong><p>${desc}</p><p><em>Posted by: ${posterName}</em></p>`;
-
-                const commentsContainer = document.createElement('div');
-                commentsContainer.className = 'comments-container';
-
-                const commentInput = document.createElement('input');
-                commentInput.type = 'text';
-                commentInput.placeholder = 'Your Name';
-                commentInput.className = 'comment-name';
-
-                const commentTextarea = document.createElement('textarea');
-                commentTextarea.placeholder = 'Write your comment here...';
-                commentTextarea.className = 'comment-text';
-
-                const commentButton = document.createElement('button');
-                commentButton.textContent = 'Post Comment';
-                commentButton.onclick = () => {
-                    const username = commentInput.value;
-                    const commentText = commentTextarea.value;
-
-                    if (username && commentText) {
-                        const commentList = commentsContainer.querySelector('.comments') || document.createElement('ul');
-                        commentList.className = 'comments';
-
-                        const commentLi = document.createElement('li');
-                        commentLi.innerHTML = `<strong>${username}</strong>: ${commentText}`;
-
-                        const replyInput = document.createElement('textarea');
-                        replyInput.placeholder = 'Write your reply here...';
-                        replyInput.className = 'reply-text';
-
-                        const replyButton = document.createElement('button');
-                        replyButton.textContent = 'Reply';
-                        replyButton.onclick = () => {
-                            const replyText = replyInput.value;
-
-                            if (replyText) {
-                                const replyLi = document.createElement('li');
-                                replyLi.innerHTML = `<strong>${posterName}</strong> (Task Poster): ${replyText}`;
-                                commentLi.appendChild(replyLi);
-                                replyInput.value = '';
-                            } else {
-                                alert('Please enter a reply.');
-                            }
-                        };
-
-                        commentLi.appendChild(replyInput);
-                        commentLi.appendChild(replyButton);
-
-                        commentList.appendChild(commentLi);
-                        commentsContainer.appendChild(commentList);
-
-                        commentInput.value = '';
-                        commentTextarea.value = '';
-                    } else {
-                        alert('Please enter your name and comment.');
-                    }
-                };
-
-                commentsContainer.appendChild(commentInput);
-                commentsContainer.appendChild(commentTextarea);
-                commentsContainer.appendChild(commentButton);
-
-                li.appendChild(commentsContainer);
-                taskList.appendChild(li);
-
-                document.getElementById('task-poster').value = '';
-                document.getElementById('task-title').value = '';
-                document.getElementById('task-desc').value = '';
+                await db.collection('tasks').add({
+                    posterName,
+                    title,
+                    desc,
+                    timestamp: new Date()
+                });
+                alert('Task added successfully!');
+                loadTasks();
             } else {
                 alert('Please fill out all fields before adding a task.');
             }
         }
 
-        function showThankYouMessage() {
-            setTimeout(() => {
-                alert("Thank you for your generosity! Your support means a lot and helps create better tools to assist others.");
-            }, 500);
+        // Load tasks from Firestore
+        async function loadTasks() {
+            const taskList = document.getElementById('task-list');
+            taskList.innerHTML = ''; // Clear the list
+
+            const snapshot = await db.collection('tasks').orderBy('timestamp', 'desc').get();
+            snapshot.forEach(doc => {
+                const task = doc.data();
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${task.title}</strong><p>${task.desc}</p><p><em>Posted by: ${task.posterName}</em></p>`;
+                taskList.appendChild(li);
+            });
         }
+
+        // Load tasks on page load
+        window.onload = function () {
+            loadTasks();
+        };
     </script>
 </body>
 </html>
