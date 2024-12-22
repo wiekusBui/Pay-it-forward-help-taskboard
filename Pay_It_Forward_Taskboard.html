@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay-It-Forward Taskboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #6200ea;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .task-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .task-form input, .task-form textarea, .task-form button {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .task-form button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .task-list {
+            margin-top: 2rem;
+        }
+
+        .task {
+            background: #f9f9ff;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .task h3 {
+            margin: 0 0 0.5rem;
+        }
+
+        .task p {
+            margin: 0.5rem 0;
+        }
+
+        .complete-button {
+            margin-top: 0.5rem;
+            background-color: #03dac5;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pay-It-Forward Taskboard</h1>
+        <p>Help others and earn good karma!</p>
+    </header>
+    <main>
+        <section>
+            <h2>Add a Task</h2>
+            <form class="task-form" id="taskForm">
+                <input type="text" id="taskTitle" placeholder="Task Title" required>
+                <textarea id="taskDescription" rows="4" placeholder="Task Description" required></textarea>
+                <button type="submit">Post Task</button>
+            </form>
+        </section>
+        <section class="task-list" id="taskList">
+            <h2>Available Tasks</h2>
+        </section>
+    </main>
+
+    <script>
+        const taskForm = document.getElementById('taskForm');
+        const taskList = document.getElementById('taskList');
+
+        taskForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const title = document.getElementById('taskTitle').value;
+            const description = document.getElementById('taskDescription').value;
+
+            // Create task element
+            const task = document.createElement('div');
+            task.classList.add('task');
+            task.innerHTML = `
+                <h3>${title}</h3>
+                <p>${description}</p>
+                <button class="complete-button">Mark as Complete</button>
+            `;
+
+            // Add complete button functionality
+            task.querySelector('.complete-button').addEventListener('click', () => {
+                task.remove();
+                alert('Thank you for paying it forward!');
+            });
+
+            // Add task to task list
+            taskList.appendChild(task);
+
+            // Clear form inputs
+            taskForm.reset();
+        });
+    </script>
+
+<footer style="text-align: center; margin-top: 2rem; padding: 1rem; background-color: #f4f4f9; border-top: 1px solid #ddd;">
+    <p>Enjoying this app? Support the creator!</p>
+    <a href="https://paypal.me/JLNBuitendag/1" target="_blank" onclick="showThankYouMessage()" style="text-decoration: none;">
+        <button style="background-color: #03dac5; color: white; border: none; padding: 0.8rem 1.5rem; font-size: 1rem; cursor: pointer; border-radius: 4px;">
+            Donate $1
+        </button>
+    </a>
+    <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
+        If this program has been helpful to you or if you feel it adds value to your work, consider supporting the creator! Your donations will help me continue creating free, valuable content and tools to assist others. Every contribution, no matter how small, makes a difference. Thank you for your generosity!
+    </p>
+</footer>
+
+<script>
+    function showThankYouMessage() {
+        setTimeout(() => {
+            alert("Thank you for your generosity! Your support means a lot and helps create more free content to help others.");
+        }, 500); // Adds a slight delay for better experience
+    }
+</script>
+
+</body>
+</html>
