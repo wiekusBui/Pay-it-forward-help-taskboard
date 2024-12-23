@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay-It-Forward Taskboard</title>
+    <style>
+        /* Your existing styles */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pay-It-Forward Taskboard</h1>
+        <p>Help others and earn good karma!</p>
+    </header>
+    <main>
+        <section class="task-form">
+            <h2>Can Someone Help Me With?</h2>
+            <input type="text" id="task-poster" placeholder="Your Name">
+            <input type="text" id="task-title" placeholder="Task Title">
+            <textarea id="task-desc" placeholder="Task Description"></textarea>
+            <button id="post-task-btn">Post Task</button>
+        </section>
+        <section class="task-list-container">
+            <h2>Tasks</h2>
+            <ul id="task-list" class="task-list"></ul>
+        </section>
+    </main>
+    <footer>
+        <p>Enjoying this app? Support the creator!</p>
+        <a href="https://paypal.me/JLNBuitendag/1" target="_blank">
+            <button>Donate $1</button>
+        </a>
+    </footer>
+
+    <!-- Add Firebase SDK -->
+    <script type="module">
+        // Import Firebase from installed package
+        import { initializeApp } from "firebase/app";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "firebase/firestore";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmc0UDtOFaLrGWbVj2ROugpyyxAZAuBHg",
+            authDomain: "pay-it-forward-a1ab8.firebaseapp.com",
+            projectId: "pay-it-forward-a1ab8",
+            storageBucket: "pay-it-forward-a1ab8.appspot.com",
+            messagingSenderId: "788159566096",
+            appId: "1:788159566096:web:aa40dcf3d843c98abc1595",
+            measurementId: "G-5NPK7TMQZH"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Reference to Firestore tasks collection
+        const tasksCollection = collection(db, "tasks");
+
+        // Add a task to Firestore
+        async function addTask() {
+            const posterName = document.getElementById('task-poster').value;
+            const title = document.getElementById('task-title').value;
+            const desc = document.getElementById('task-desc').value;
+
+            if (posterName && title && desc) {
+                try {
+                    await addDoc(tasksCollection, {
+                        posterName,
+                        title,
+                        desc,
+                        timestamp: new Date()
+                    });
+                    alert('Task added successfully!');
+                    loadTasks(); // Reload tasks
+                } catch (error) {
+                    console.error("Error adding task: ", error);
+                }
+            } else {
+                alert('Please fill out all fields before adding a task.');
+            }
+        }
+
+       async function loadTasks() {
+    try {
+        const taskList = document.getElementById('task-list');
+        taskList.innerHTML = ''; // Clear the list
+
+        const snapshot = await db.collection('tasks').orderBy('timestamp', 'desc').get();
+        if (snapshot.empty) {
+            taskList.innerHTML = '<p>No tasks found. Be the first to post one!</p>';
+        } else {
+            snapshot.forEach(doc => {
+                const task = doc.data();
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>${task.title}</strong>
+                    <p>${task.desc}</p>
+                    <p><em>Posted by: ${task.posterName}</em></p>
+                `;
+                taskList.appendChild(li);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading tasks:', error); // Log any error
+    }
+}
+
+        // Add event listener to "Post Task" button
+        document.getElementById('post-task-btn').addEventListener('click', addTask);
+
+        // Load tasks on page load
+        window.addEventListener('load', loadTasks);
+    </script>
+</body>
+</html>
+
+
+    
