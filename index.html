@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pay-It-Forward Taskboard</title>
-    <style>
-        /* Your existing styles */
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+ 
+  
+
     <header>
-        <h1>Pay-It-Forward Taskboard</h1>
+        <h1>Pay-It-Forward And Help Someone in</h1>
         <p>Help others and earn good karma!</p>
     </header>
     <main>
@@ -53,6 +54,10 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+      // Set up Firestore in your project directory, creates a .rules file 
+        firebase init firestore;
+
 
         // Reference to Firestore tasks collection
         const tasksCollection = collection(db, "tasks");
