@@ -56,19 +56,24 @@
         const db = getFirestore(app);
 
       // Set up Firestore in your project directory, creates a .rules file 
-        firebase init firestore;
+        
 
+        console.log("Firestore initialized:", db);
 
         // Reference to Firestore tasks collection
         const tasksCollection = collection(db, "tasks");
 
         // Add a task to Firestore
         async function addTask() {
+		event.preventDefault(); // Prevent form submission
+		console.log("Add Task triggered");
             const posterName = document.getElementById('task-poster').value;
             const title = document.getElementById('task-title').value;
             const desc = document.getElementById('task-desc').value;
-
-            if (posterName && title && desc) {
+			console.log("Poster Name:", posterName);
+   			 console.log("Task Title:", title);
+   			 console.log("Task Description:", desc);
+  	    if (posterName && title && desc) {
                 try {
                     await addDoc(tasksCollection, {
                         posterName,
@@ -86,12 +91,14 @@
             }
         }
 
-       async function loadTasks() {
+      async function loadTasks() {
     try {
         const taskList = document.getElementById('task-list');
         taskList.innerHTML = ''; // Clear the list
 
-        const snapshot = await db.collection('tasks').orderBy('timestamp', 'desc').get();
+        const q = query(tasksCollection, orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+
         if (snapshot.empty) {
             taskList.innerHTML = '<p>No tasks found. Be the first to post one!</p>';
         } else {
@@ -107,12 +114,15 @@
             });
         }
     } catch (error) {
-        console.error('Error loading tasks:', error); // Log any error
+        console.error('Error loading tasks:', error);
     }
 }
-
         // Add event listener to "Post Task" button
-        document.getElementById('post-task-btn').addEventListener('click', addTask);
+        // document.getElementById('post-task-btn').addEventListener('click', addTask);
+        document.getElementById('post-task-btn').addEventListener('click', () => {
+        console.log('Button clicked!');
+    addTask();
+});
 
         // Load tasks on page load
         window.addEventListener('load', loadTasks);
