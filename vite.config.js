@@ -35,6 +35,14 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     build: {
         target: 'esnext', // Ensure compatibility with ES modules
-    }
+rollupOptions: {
+      external: [],
+    },
+},
+  optimizeDeps: {
+    include: ["firebase/app", "firebase/firestore"], // Include Firebase explicitly
+  },
 });
+
+
 
