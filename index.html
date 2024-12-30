@@ -46,23 +46,23 @@
 	import {query} from "firebase/firestore";
 	import {orderBy} from "firebase/firestore";
         // Firebase configuration
-        //const firebaseConfig = {
-         //   apiKey: "AIzaSyDmc0UDtOFaLrGWbVj2ROugpyyxAZAuBHg",
-         //   authDomain: "pay-it-forward-a1ab8.firebaseapp.com",
-         //   projectId: "pay-it-forward-a1ab8",
-         //   storageBucket: "pay-it-forward-a1ab8.appspot.com",
-         //   messagingSenderId: "788159566096",
-         //   appId: "1:788159566096:web:aa40dcf3d843c98abc1595",
-         //   measurementId: "G-5NPK7TMQZH"
-        //};
-	const firebaseConfig = {
-	  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-	  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-	  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-	  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-	  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-	  appId: import.meta.env.VITE_FIREBASE_APP_ID
-	};
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmc0UDtOFaLrGWbVj2ROugpyyxAZAuBHg",
+            authDomain: "pay-it-forward-a1ab8.firebaseapp.com",
+           projectId: "pay-it-forward-a1ab8",
+            storageBucket: "pay-it-forward-a1ab8.appspot.com",
+            messagingSenderId: "788159566096",
+            appId: "1:788159566096:web:aa40dcf3d843c98abc1595",
+            measurementId: "G-5NPK7TMQZH"
+        };
+	//const firebaseConfig = {
+	//  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+	//  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+	//  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+	//  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+	//  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+	//  appId: import.meta.env.VITE_FIREBASE_APP_ID
+	//};
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
