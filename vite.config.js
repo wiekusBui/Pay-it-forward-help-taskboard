@@ -42,7 +42,7 @@ rollupOptions: {
     },
 },
   optimizeDeps: {
-    include: ["firebase/app", "/firebase/firestore"], // Include Firebase explicitly
+    include: ["firebase/app", "/node_modules/firebase/firestore"], // Include Firebase explicitly
   },
 });
 
