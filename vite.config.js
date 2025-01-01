@@ -34,6 +34,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     build: {
+        outDir: 'dist', // Directory where the build files will be generated
         target: 'esnext', // Ensure compatibility with ES modules
 rollupOptions: {
       external: [],
