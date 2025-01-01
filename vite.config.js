@@ -36,12 +36,13 @@ export default defineConfig({
     build: {
         outDir: 'dist', // Directory where the build files will be generated
         target: 'esnext', // Ensure compatibility with ES modules
+        
 rollupOptions: {
       external: [],
     },
 },
   optimizeDeps: {
-    include: ["firebase/app", "firebase/firestore"], // Include Firebase explicitly
+    include: ["firebase/app", "/firebase/firestore"], // Include Firebase explicitly
   },
 });
 
