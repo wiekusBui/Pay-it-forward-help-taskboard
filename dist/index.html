@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pay-It-Forward Taskboard</title>
     
-  <script type="module" crossorigin src="/assets/index-1a33eed8.js"></script>
-  <link rel="stylesheet" href="/assets/index-3b382740.css">
-</head>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./bundle.js"defer></script>
+    
+
+<script defer src="bundle.js"></script><link href="styles.css" rel="stylesheet"></head>
  
   
 
@@ -19,7 +21,9 @@
     <main>
         <section class="task-form">
             <h2>Can Someone Help Me With?</h2>
+            <label for="task-poster">Your Name</label>
             <input type="text" id="task-poster" placeholder="Your Name">
+            <label for="task-title">Your Name</label>
             <input type="text" id="task-title" placeholder="Task Title">
             <textarea id="task-desc" placeholder="Task Description"></textarea>
             <button id="post-task-btn">Post Task</button>
@@ -31,15 +35,18 @@
     </main>
     <footer>
         <p>Enjoying this app? Support the creator!</p>
-        <a href="https://paypal.me/JLNBuitendag/1" target="_blank">
-            <button>Donate $1</button>
-        </a>
+        <button onclick="window.open('https://paypal.me/JLNBuitendag/1', '_blank')">Donate $1</button>
+
+        
+        
     </footer>
 
     <!-- Add Firebase SDK -->
+   
+
+
+
+
     
 </body>
 </html>
-
-
-    
